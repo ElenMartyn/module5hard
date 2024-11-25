@@ -3,25 +3,28 @@ import time
 
 
 class User:
-    def __init__(self, nickname, password, age): # имя пользователя, пароль, возраст
+    def __init__(self, nickname, password, age):  # именование конструктора
         self.nickname = nickname
-        self.password = hashlib.sha256(password.encode()).hexdigest() #  Хэшируем пароль
+        self.password = hashlib.sha256(password.encode()).hexdigest()  # Хэшируем пароль
         self.age = age
+
+    def __str__(self):
+        return self.nickname  # возвращаем ник пользователя
 
 
 class Video:
-    def __init__(self, title, duration, adult_mode=False): # заголовок, продолжительность, остановки
+    def __init__(self, title, duration, adult_mode=False):  # именование конструктора
         self.title = title
         self.duration = duration  # продолжительность в секундах
-        self.time_now = 0  # текущая время просмотра
+        self.time_now = 0  # текущее время просмотра
         self.adult_mode = adult_mode  # режим для взрослых
 
 
 class UrTube:
-    def __init__(self):
-        self.users = [] # список объектов
-        self.videos = [] # список объектов
-        self.current_user = None # текущий пользователь
+    def __init__(self):  # именование конструктора
+        self.users = []  # список объектов
+        self.videos = []  # список объектов
+        self.current_user = None  # текущий пользователь
 
     def log_in(self, nickname, password):
         hashed_password = hashlib.sha256(password.encode()).hexdigest()
@@ -42,7 +45,7 @@ class UrTube:
         self.current_user = new_user  # Вход после регистрации
         print(f'Пользователь {nickname} зарегистрирован и вошёл в систему.')
 
-    def log_out(self): # Выход
+    def log_out(self):  # Выход
         self.current_user = None
         print("Вы вышли из аккаунта.")
 
@@ -65,7 +68,7 @@ class UrTube:
         for video in self.videos:
             if video.title == title:
                 if video.adult_mode and self.current_user.age < 18:
-                    print("Вам нет 18 лет, пожалуйста покиньте страницу.")
+                    print("Вам нет 18 лет, пожалуйста, покиньте страницу.")
                     return
 
                 print(f'Начинаем просмотр видео: "{video.title}".')
@@ -79,9 +82,8 @@ class UrTube:
         print(f'Видео с названием "{title}" не найдено.')
 
 
-
+# Пример использования
 ur = UrTube()
-
 
 v1 = Video('Лучший язык программирования 2024 года', 200)
 v2 = Video('Для чего девушкам парень программист?', 10, adult_mode=True)
@@ -94,19 +96,3 @@ print('Проверка поиска')
 print(ur.get_videos('лучший'))
 print(ur.get_videos('ПРОГ'))
 print(ur.get_videos('домашн'))
-
-print('Проверка возвраст и пользователя')
-ur.watch_video('Для чего девушкам парень программист?')
-ur.register('tola_dydkin', 'lolkekcheburek', 13)
-ur.watch_video('Для чего девушкам парень программист?')
-ur.register('urban_pythonist', 'iScX4vIJClb9YQavjAgF', 25)
-ur.watch_video('Для чего девушкам парень программист?')
-ur.register('tolka_rymka_na_stole', 'tixoBolu', 18)
-ur.watch_video('Как сделать вовремя домашнюю, при нагруженном графике')
-
-print('вход в другой аккаунт')
-ur.register('tola_dydkin', 'F123FM8fjm9jmi', 55)
-print(ur.current_user)
-
-print('Существует видео?')
-ur.watch_video('Лучший язык программирования 2024 года!')
